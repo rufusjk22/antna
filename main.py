@@ -65,15 +65,14 @@ st.markdown("""
         border: 1px solid rgba(51, 51, 51, 0.5);
         backdrop-filter: blur(10px);
     }
-    
+
     .social-update {
         background: linear-gradient(145deg, rgba(26, 26, 26, 0.9), rgba(32, 32, 32, 0.9));
-        padding: 15px;
-        border-radius: 10px;
-        margin: 10px 0;
+        padding: 16px;
+        border-radius: 12px;
+        margin: 12px 0;
         backdrop-filter: blur(10px);
     }
-    
     /* Trust indicators with glow */
     .trust-high { 
         border-left: 4px solid #00ff9d;
@@ -559,25 +558,31 @@ def main():
             (social_updates_df['account_type'].isin(account_types))
         ].sort_values(['timestamp', 'trust_score'], ascending=[False, False])
         
+            
         for _, update in filtered_updates.iterrows():
             trust_class = {
                 True: "trust-high" if update['trust_score'] >= 0.9 else "trust-medium",
                 False: "trust-low"
             }[update['trust_score'] >= 0.7]
             
-            # In the social updates section, update the markdown string:
             st.markdown(f"""
                 <div class='social-update {trust_class}'>
-                    <strong>{update['account_type']}</strong> - {update['username']}
-                    {' ✓' if update['verified'] else ''}
-                    <div style="margin: 12px 0;">{update['message']}</div>
-                    <div style="color: #888; font-size: 0.9em;">
+                    <div class="update-header">
+                        <strong>{update['account_type']}</strong> - {update['username']}
+                        {' ✓' if update['verified'] else ''}
+                    </div>
+                    <div class="update-content">
+                        {update['message']}
+                    </div>
+                    <div class="update-meta">
                         📍 {update['location']} &nbsp;|&nbsp; 
                         💯 Trust: {update['trust_score']:.2f} &nbsp;|&nbsp; 
                         👥 {update['engagement']}
                     </div>
                 </div>
             """, unsafe_allow_html=True)
+
+
     
     # Preparation Tab
     with tab4:
