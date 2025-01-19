@@ -565,18 +565,17 @@ def main():
                 False: "trust-low"
             }[update['trust_score'] >= 0.7]
             
+            # In the social updates section, update the markdown string:
             st.markdown(f"""
                 <div class='social-update {trust_class}'>
-                    <strong>{update['account_type']}</strong> {update['username']}
+                    <strong>{update['account_type']}</strong> - {update['username']}
                     {' ✓' if update['verified'] else ''}
-                    <br><br>
-                    {update['message']}
-                    <br><br>
-                    <small>
-                        📍 {update['location']} | 
-                        💯 Trust: {update['trust_score']:.2f} | 
+                    <div style="margin: 12px 0;">{update['message']}</div>
+                    <div style="color: #888; font-size: 0.9em;">
+                        📍 {update['location']} &nbsp;|&nbsp; 
+                        💯 Trust: {update['trust_score']:.2f} &nbsp;|&nbsp; 
                         👥 {update['engagement']}
-                    </small>
+                    </div>
                 </div>
             """, unsafe_allow_html=True)
     
