@@ -73,15 +73,77 @@ st.markdown("""
         margin: 12px 0;
         backdrop-filter: blur(10px);
     }
-    /* Trust indicators with glow */
+    
+    .update-header {
+        margin-bottom: 12px;
+    }
+    
+    .account-info {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+    
+    .username {
+        color: #888;
+        font-size: 0.95em;
+    }
+    
+    .badge {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        font-size: 12px;
+        margin-left: 4px;
+    }
+    
+    .verified {
+        background: #00ff9d33;
+        color: #00ff9d;
+    }
+    
+    .unverified {
+        background: #ff006e33;
+        color: #ff006e;
+    }
+    
+    .update-content {
+        margin: 12px 0;
+        line-height: 1.4;
+        font-size: 1.05em;
+    }
+    
+    .update-meta {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        color: #888;
+        font-size: 0.9em;
+    }
+    
+    .meta-item {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+    }
+    
+    .meta-separator {
+        color: #444;
+    }
+    
     .trust-high { 
         border-left: 4px solid #00ff9d;
         box-shadow: -4px 0 8px -2px rgba(0, 255, 157, 0.3);
     }
+    
     .trust-medium { 
         border-left: 4px solid #ffbe0b;
         box-shadow: -4px 0 8px -2px rgba(255, 190, 11, 0.3);
     }
+    
     .trust-low { 
         border-left: 4px solid #ff006e;
         box-shadow: -4px 0 8px -2px rgba(255, 0, 110, 0.3);
@@ -561,24 +623,43 @@ def main():
         
         # Display updates
         for _, update in filtered_updates.iterrows():
+            # Determine trust class and verification status
             trust_class = {
                 True: "trust-high" if update['trust_score'] >= 0.9 else "trust-medium",
                 False: "trust-low"
             }[update['trust_score'] >= 0.7]
             
+            verification_badge = "verified" if update['verified'] else "unverified"
+            
+            # Select badge color based on account type and verification
+            badge_color = {
+                'Official': '#00ff9d',
+                'Healthcare': '#00ff9d',
+                'Emergency': '#00ff9d',
+                'Media': '#ffbe0b',
+                'Citizen': '#888888'
+            }.get(update['account_type'], '#888888')
+            
             st.markdown(f"""
                 <div class='social-update {trust_class}'>
                     <div class="update-header">
-                        <strong>{update['account_type']}</strong> - {update['username']}
-                        {' ✓' if update['verified'] else ''}
+                        <div class="account-info">
+                            <strong style="color: {badge_color}">{update['account_type']}</strong>
+                            <span class="username">{update['username']}</span>
+                            <span class="badge {verification_badge}">
+                                {' ✓' if update['verified'] else '✕'}
+                            </span>
+                        </div>
                     </div>
                     <div class="update-content">
                         {update['message']}
                     </div>
                     <div class="update-meta">
-                        📍 {update['location']} &nbsp;|&nbsp; 
-                        💯 Trust: {update['trust_score']:.2f} &nbsp;|&nbsp; 
-                        👥 {update['engagement']}
+                        <span class="meta-item">📍 {update['location']}</span>
+                        <span class="meta-separator">|</span>
+                        <span class="meta-item">💯 Trust: {update['trust_score']:.2f}</span>
+                        <span class="meta-separator">|</span>
+                        <span class="meta-item">👥 {update['engagement']}</span>
                     </div>
                 </div>
             """, unsafe_allow_html=True)
