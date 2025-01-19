@@ -270,7 +270,9 @@ st.markdown("""
 # Initialize Groq client
 GROQ_API_KEY = "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"
 try:
-    groq_client = Groq(api_key=GROQ_API_KEY)
+    os.environ["GROQ_API_KEY"] = GROQ_API_KEY
+    groq_client = Groq()
+    st.success("Successfully initialized Groq client!")
 except Exception as e:
     st.error(f"Failed to initialize Groq client: {str(e)}")
     st.stop()
