@@ -414,7 +414,7 @@ def generate_data():
             'Live updates: Multiple weather-related incidents across Qatar.'
         ],
         'location': ['Al Wakrah']*4 + ['Doha']*3 + ['Al Khor']*2 + ['Qatar'],
-        'trust_score': [0.95, 0.95, 0.98, 0.97, 0.96, 0.95, 0.99, 0.97, 0.94, 0.93],
+        'trust_score': [0.95, 0.68, 0.98, 0.97, 0.96, 0.65, 0.99, 0.97, 0.94, 0.93],
         'verified': [True, False, True, True, True, False, True, True, True, True],
         'engagement': [1205, 342, 892, 1567, 723, 445, 2341, 1123, 567, 1892],
         'emergency_type': ['Sandstorm']*4 + ['Heat Wave']*3 + ['Flood']*2 + ['Multiple']
