@@ -272,7 +272,7 @@ try:
     GROQ_API_KEY = st.secrets["GROQ_API_KEY"]
 except:
     # Fallback to local environment variable (for local development)
-    GROQ_API_KEY = "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"
+    GROQ_API_KEY = "GROQ_API_KEY"
 
 try:
     groq_client = Groq(api_key=GROQ_API_KEY)
