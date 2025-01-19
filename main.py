@@ -539,48 +539,49 @@ def main():
                     </div>
                 """, unsafe_allow_html=True)
 
-    # Social Updates Tab
-    with tab3:
-        st.markdown("<h2>📱 Live Updates</h2>", unsafe_allow_html=True)
+    # Inside Tab 3 (Social Updates)
+with tab3:
+    st.markdown("<h2>📱 Live Updates</h2>", unsafe_allow_html=True)
+    
+    col1, col2 = st.columns([2,3])
+    with col1:
+        min_trust_score = st.slider("Trust Score Filter", 0.0, 1.0, 0.7, 0.1)
+    with col2:
+        account_types = st.multiselect(
+            "Source Filter",
+            options=social_updates_df['account_type'].unique(),
+            default=social_updates_df['account_type'].unique()
+        )
+    
+    # Filter updates
+    filtered_updates = social_updates_df[
+        (social_updates_df['trust_score'] >= min_trust_score) &
+        (social_updates_df['account_type'].isin(account_types))
+    ].sort_values(['timestamp', 'trust_score'], ascending=[False, False])
+    
+    # Display updates
+    for _, update in filtered_updates.iterrows():
+        trust_class = {
+            True: "trust-high" if update['trust_score'] >= 0.9 else "trust-medium",
+            False: "trust-low"
+        }[update['trust_score'] >= 0.7]
         
-        col1, col2 = st.columns([2,3])
-        with col1:
-            min_trust_score = st.slider("Trust Score Filter", 0.0, 1.0, 0.7, 0.1)
-        with col2:
-            account_types = st.multiselect(
-                "Source Filter",
-                options=social_updates_df['account_type'].unique(),
-                default=social_updates_df['account_type'].unique()
-            )
-        
-        filtered_updates = social_updates_df[
-            (social_updates_df['trust_score'] >= min_trust_score) &
-            (social_updates_df['account_type'].isin(account_types))
-        ].sort_values(['timestamp', 'trust_score'], ascending=[False, False])
-        
-            
-        for _, update in filtered_updates.iterrows():
-            trust_class = {
-                True: "trust-high" if update['trust_score'] >= 0.9 else "trust-medium",
-                False: "trust-low"
-            }[update['trust_score'] >= 0.7]
-            
-            st.markdown(f"""
-                <div class='social-update {trust_class}'>
-                    <div class="update-header">
-                        <strong>{update['account_type']}</strong> - {update['username']}
-                        {' ✓' if update['verified'] else ''}
-                    </div>
-                    <div class="update-content">
-                        {update['message']}
-                    </div>
-                    <div class="update-meta">
-                        📍 {update['location']} &nbsp;|&nbsp; 
-                        💯 Trust: {update['trust_score']:.2f} &nbsp;|&nbsp; 
-                        👥 {update['engagement']}
-                    </div>
+        st.markdown(f"""
+            <div class='social-update {trust_class}'>
+                <div class="update-header">
+                    <strong>{update['account_type']}</strong> - {update['username']}
+                    {' ✓' if update['verified'] else ''}
                 </div>
-            """, unsafe_allow_html=True)
+                <div class="update-content">
+                    {update['message']}
+                </div>
+                <div class="update-meta">
+                    📍 {update['location']} &nbsp;|&nbsp; 
+                    💯 Trust: {update['trust_score']:.2f} &nbsp;|&nbsp; 
+                    👥 {update['engagement']}
+                </div>
+            </div>
+        """, unsafe_allow_html=True)
 
 
     
