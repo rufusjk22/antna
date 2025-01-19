@@ -266,13 +266,7 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# Initialize Groq client
-try:
-    # Try to get from Streamlit secrets first (for cloud deployment)
-    GROQ_API_KEY = st.secrets["GROQ_API_KEY"]
-except:
-    # Fallback to local environment variable (for local development)
-    GROQ_API_KEY = "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"
+
 
 try:
     groq_client = Groq(api_key=GROQ_API_KEY)
