@@ -30,6 +30,7 @@ st.markdown("""
     /* Import Space Mono font */
     @import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap');
     
+    
     /* Main theme */
     .stApp {
         background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%) !important;
@@ -492,24 +493,11 @@ def main():
         """, unsafe_allow_html=True)
         
         # Voice Assistant
-        st.subheader("🎤 Voice Assistant")
-        
-        # Custom recorder component
-        from streamlit.components.v1 import html
-
-        st.markdown("""
-            <div class="stats-box">
-                <div id="recorder-wrapper"></div>
-            </div>
-        """, unsafe_allow_html=True)
-        
-        # Initialize audio recorder with custom styling
+        st.subheader("🎤 Voice Input")
         audio_bytes = audio_recorder(
-            pause_threshold=30.0,
+            text="",  # Minimal text
             recording_color="#00ff9d",
-            neutral_color="#333333",
-            icon_name="microphone",
-            icon_size="6x"
+            neutral_color="#333333"
         )
         
         if audio_bytes:
