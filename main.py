@@ -493,17 +493,23 @@ def main():
         
         # Voice Assistant
         st.subheader("🎤 Voice Assistant")
+        
+        # Custom recorder component
+        from streamlit.components.v1 import html
+
         st.markdown("""
             <div class="stats-box">
-                <p>Hold the microphone button and speak your question.</p>
-                <p style="font-size: 0.9em; color: #888;">Release when finished.</p>
+                <div id="recorder-wrapper"></div>
             </div>
         """, unsafe_allow_html=True)
+        
+        # Initialize audio recorder with custom styling
         audio_bytes = audio_recorder(
-            text="Hold to Record",
+            pause_threshold=30.0,
             recording_color="#00ff9d",
             neutral_color="#333333",
-            icon_size="2x"
+            icon_name="microphone",
+            icon_size="6x"
         )
         
         if audio_bytes:
