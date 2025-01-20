@@ -492,11 +492,18 @@ def main():
         """, unsafe_allow_html=True)
         
         # Voice Assistant
-        st.subheader("🎤 Voice Input")
+        st.subheader("🎤 Voice Assistant")
+        st.markdown("""
+            <div class="stats-box">
+                <p>Hold the microphone button and speak your question.</p>
+                <p style="font-size: 0.9em; color: #888;">Release when finished.</p>
+            </div>
+        """, unsafe_allow_html=True)
         audio_bytes = audio_recorder(
-            text="",  # Minimal text
+            text="Hold to Record",
             recording_color="#00ff9d",
-            neutral_color="#333333"
+            neutral_color="#333333",
+            icon_size="2x"
         )
         
         if audio_bytes:
